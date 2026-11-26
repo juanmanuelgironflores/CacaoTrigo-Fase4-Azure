@@ -1,4 +1,4 @@
-name: Desplegar CacaoTrigo en Azure Container Apps
+name: Construir y publicar CacaoTrigo en ACR
 
 on:
   push:
@@ -14,8 +14,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  AZURE_RESOURCE_GROUP: cacaotrigo-jgiron-scus-2026
-  AZURE_CONTAINER_APP: cacaotrigo-api
   AZURE_CONTAINER_REGISTRY: cacaotrigoacrjgiron26
   IMAGE_NAME: cacaotrigo-api
 
@@ -40,23 +38,6 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build --pull \
+          docker build --pull --platform linux/amd64 \
             --tag "$AZURE_CONTAINER_REGISTRY.azurecr.io/$IMAGE_NAME:$IMAGE_TAG" .
           docker push "$AZURE_CONTAINER_REGISTRY.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
-
-      - name: Configurar acceso de lectura al registro
-        run: >-
-          az containerapp registry set
-          --name "$AZURE_CONTAINER_APP"
-          --resource-group "$AZURE_RESOURCE_GROUP"
-          --server "$AZURE_CONTAINER_REGISTRY.azurecr.io"
-          --identity system
-
-      - name: Actualizar la aplicación
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-        run: >-
-          az containerapp update
-          --name "$AZURE_CONTAINER_APP"
-          --resource-group "$AZURE_RESOURCE_GROUP"
-          --image "$AZURE_CONTAINER_REGISTRY.azurecr.io/$IMAGE_NAME:$IMAGE_TAG"
