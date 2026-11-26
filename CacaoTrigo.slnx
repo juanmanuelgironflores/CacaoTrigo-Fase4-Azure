@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CacaoTrigo.csproj" />
+  <Project Path="tests/CacaoTrigo.Tests/CacaoTrigo.Tests.csproj" />
+</Solution>

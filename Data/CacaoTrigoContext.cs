@@ -1,4 +1,5 @@
 using CacaoTrigo.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,20 @@ public class CacaoTrigoContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Mantiene las claves compuestas de Identity dentro del límite de
+        // tamaño que SQL Server admite para índices y claves primarias.
+        modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
+        {
+            entity.Property(login => login.LoginProvider).HasMaxLength(128);
+            entity.Property(login => login.ProviderKey).HasMaxLength(128);
+        });
+
+        modelBuilder.Entity<IdentityUserToken<string>>(entity =>
+        {
+            entity.Property(token => token.LoginProvider).HasMaxLength(128);
+            entity.Property(token => token.Name).HasMaxLength(128);
+        });
 
         modelBuilder.Entity<Producto>()
             .Property(p => p.Precio)

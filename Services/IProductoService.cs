@@ -6,6 +6,8 @@ public interface IProductoService
 {
     Task<List<Producto>> ObtenerTodosAsync();
 
+    Task<List<ResumenVentasProducto>> ObtenerResumenVentasAsync();
+
     Task<List<Producto>> BuscarYOrdenarAsync(
         string? buscar,
         int? categoriaId,

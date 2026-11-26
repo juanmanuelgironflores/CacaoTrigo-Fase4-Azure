@@ -21,6 +21,32 @@ public class ProductoRepository : IProductoRepository
             .ToListAsync();
     }
 
+    public async Task<List<ResumenVentasProducto>> ObtenerResumenVentasAsync()
+    {
+        var consulta =
+            from detalle in _context.DetallesPedido.AsNoTracking()
+            join producto in _context.Productos.AsNoTracking()
+                on detalle.ProductoId equals producto.ProductoId
+            join categoria in _context.Categorias.AsNoTracking()
+                on producto.CategoriaId equals categoria.CategoriaId
+            group new { detalle, producto, categoria } by new
+            {
+                producto.ProductoId,
+                producto.Nombre,
+                NombreCategoria = categoria.Nombre
+            }
+            into ventas
+            orderby ventas.Sum(elemento => elemento.detalle.Cantidad) descending
+            select new ResumenVentasProducto(
+                ventas.Key.ProductoId,
+                ventas.Key.Nombre,
+                ventas.Key.NombreCategoria,
+                ventas.Sum(elemento => elemento.detalle.Cantidad),
+                ventas.Sum(elemento => elemento.detalle.Subtotal));
+
+        return await consulta.ToListAsync();
+    }
+
     public async Task<List<Producto>> BuscarYOrdenarAsync(
         string? buscar,
         int? categoriaId,

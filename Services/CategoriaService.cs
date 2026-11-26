@@ -1,6 +1,5 @@
 ﻿using CacaoTrigo.Models;
 using CacaoTrigo.Repositories;
-using CacaoTrigo.Repositories;
 
 namespace CacaoTrigo.Services;
 

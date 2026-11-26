@@ -35,6 +35,14 @@ public class ProductosApiController : ControllerBase
         return Ok(productos.Select(ConvertirRespuesta).ToList());
     }
 
+    // GET: api/productos/reporte/ventas
+    [HttpGet("reporte/ventas")]
+    public async Task<ActionResult<IEnumerable<ResumenVentasProducto>>> ObtenerResumenVentas()
+    {
+        var resumen = await _productoService.ObtenerResumenVentasAsync();
+        return Ok(resumen);
+    }
+
     // GET: api/productos/5
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProductoApiResponse>> ObtenerPorId(int id)

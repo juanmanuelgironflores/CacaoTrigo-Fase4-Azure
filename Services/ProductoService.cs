@@ -17,6 +17,11 @@ public class ProductoService : IProductoService
         return _productoRepository.ObtenerTodosAsync();
     }
 
+    public Task<List<ResumenVentasProducto>> ObtenerResumenVentasAsync()
+    {
+        return _productoRepository.ObtenerResumenVentasAsync();
+    }
+
     public Task<List<Producto>> BuscarYOrdenarAsync(
         string? buscar,
         int? categoriaId,
