@@ -1,0 +1,81 @@
+@model CacaoTrigo.Models.Reserva
+
+@{
+    ViewData["Title"] = "Crear reserva";
+}
+
+<h1>Crear reserva</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="FechaHora" class="form-label">Fecha y hora</label>
+                <input asp-for="FechaHora"
+                       type="datetime-local"
+                       asp-format="{0:yyyy-MM-ddTHH:mm}"
+                       step="60"
+                       class="form-control" />
+                <span asp-validation-for="FechaHora" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NumeroPersonas" class="form-label">Número de personas</label>
+                <input asp-for="NumeroPersonas" type="number" min="1" max="20" class="form-control" />
+                <span asp-validation-for="NumeroPersonas" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NombreContacto" class="form-label">Nombre de contacto</label>
+                <input asp-for="NombreContacto" class="form-control" />
+                <span asp-validation-for="NombreContacto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TelefonoContacto" class="form-label">Teléfono</label>
+                <input asp-for="TelefonoContacto" type="tel" class="form-control" />
+                <span asp-validation-for="TelefonoContacto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CorreoContacto" class="form-label">Correo electrónico</label>
+                <input asp-for="CorreoContacto" type="email" class="form-control" />
+                <span asp-validation-for="CorreoContacto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Estado" class="form-label">Estado</label>
+                <select asp-for="Estado" asp-items="ViewBag.Estado" class="form-select"></select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Zona" class="form-label">Zona</label>
+                <select asp-for="Zona" asp-items="ViewBag.Zona" class="form-select">
+                    <option value="">-- Sin definir --</option>
+                </select>
+                <span asp-validation-for="Zona" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MesaId" class="form-label">Mesa</label>
+                <select asp-for="MesaId" asp-items="ViewBag.MesaId" class="form-select">
+                    <option value="">-- Sin asignar --</option>
+                </select>
+                <span asp-validation-for="MesaId" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar reserva</button>
+            <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

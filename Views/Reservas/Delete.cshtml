@@ -1,0 +1,56 @@
+@model CacaoTrigo.Models.Reserva
+
+@{
+    ViewData["Title"] = "Eliminar reserva";
+    var mesaTexto = Model.Mesa == null
+        ? "Sin mesa asignada"
+        : $"Mesa {Model.Mesa.Numero} - {Model.Mesa.Ubicacion}";
+}
+
+<h1>Eliminar reserva</h1>
+
+<div class="alert alert-warning" role="alert">
+    ¿Seguro que deseas eliminar esta reserva? Esta acción no se puede deshacer.
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-4">Fecha y hora</dt>
+            <dd class="col-sm-8">@Model.FechaHora.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt class="col-sm-4">Número de personas</dt>
+            <dd class="col-sm-8">@Model.NumeroPersonas</dd>
+
+            <dt class="col-sm-4">Nombre de contacto</dt>
+            <dd class="col-sm-8">@Model.NombreContacto</dd>
+
+            <dt class="col-sm-4">Teléfono</dt>
+            <dd class="col-sm-8">@Model.TelefonoContacto</dd>
+
+            <dt class="col-sm-4">Correo electrónico</dt>
+            <dd class="col-sm-8">
+                @if (!string.IsNullOrWhiteSpace(Model.CorreoContacto))
+                {
+                    <a href="mailto:@Model.CorreoContacto">@Model.CorreoContacto</a>
+                }
+                else
+                {
+                    <span>Sin correo</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">@Model.Estado</dd>
+
+            <dt class="col-sm-4">Mesa asignada</dt>
+            <dd class="col-sm-8">@mesaTexto</dd>
+        </dl>
+
+        <form asp-action="Delete" asp-route-id="@Model.ReservaId" method="post">
+            <input type="hidden" asp-for="ReservaId" />
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

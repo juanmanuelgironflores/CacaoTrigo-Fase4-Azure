@@ -1,0 +1,65 @@
+@model CacaoTrigo.Models.ViewModels.RegistroViewModel
+
+@{
+    ViewData["FullWidth"] = true;
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<section class="ct-authpage">
+<div class="ct-auth">
+    <img class="ct-auth__logo" src="~/img/logo.png" alt="Cacao y Trigo, panadería, café y restaurante" />
+
+    <div class="ct-auth__card">
+        <h1>Crear cuenta</h1>
+        <p class="ct-auth__lead">Con tu cuenta podrás hacer pedidos, reservar mesa y ver tu historial.</p>
+
+        <form asp-action="Registro" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="NombreCompleto" class="form-label"></label>
+                <input asp-for="NombreCompleto" class="form-control" autocomplete="name" autofocus />
+                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Correo" class="form-label"></label>
+                <input asp-for="Correo" type="email" class="form-control" autocomplete="email" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Telefono" class="form-label"></label>
+                <input asp-for="Telefono" type="tel" class="form-control" autocomplete="tel" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Contrasena" class="form-label"></label>
+                <input asp-for="Contrasena" class="form-control" autocomplete="new-password" />
+                <div class="form-text">Mínimo 8 caracteres, con mayúscula, minúscula, número y un símbolo.</div>
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="ConfirmarContrasena" class="form-label"></label>
+                <input asp-for="ConfirmarContrasena" class="form-control" autocomplete="new-password" />
+                <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+        </form>
+
+        <p class="ct-auth__alt">
+            ¿Ya tienes cuenta?
+            <a asp-action="Login">Ingresa aquí</a>
+        </p>
+    </div>
+</div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

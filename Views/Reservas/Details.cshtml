@@ -1,0 +1,65 @@
+@model CacaoTrigo.Models.Reserva
+
+@{
+    ViewData["Title"] = "Detalles de la reserva";
+}
+
+<h1>Detalles de la reserva</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-4">Fecha y hora</dt>
+            <dd class="col-sm-8">
+                @Model.FechaHora.ToString("dd/MM/yyyy HH:mm")
+            </dd>
+
+            <dt class="col-sm-4">Número de personas</dt>
+            <dd class="col-sm-8">@Model.NumeroPersonas</dd>
+
+            <dt class="col-sm-4">Nombre de contacto</dt>
+            <dd class="col-sm-8">@Model.NombreContacto</dd>
+
+            <dt class="col-sm-4">Teléfono</dt>
+            <dd class="col-sm-8">@Model.TelefonoContacto</dd>
+
+            <dt class="col-sm-4">Correo electrónico</dt>
+            <dd class="col-sm-8">
+                @if (!string.IsNullOrWhiteSpace(Model.CorreoContacto))
+                {
+                    <a href="mailto:@Model.CorreoContacto">@Model.CorreoContacto</a>
+                }
+                else
+                {
+                    <span>No indicado</span>
+                }
+            </dd>
+
+            <dt class="col-sm-4">Zona</dt>
+            <dd class="col-sm-8">@(Model.Zona ?? "Sin definir")</dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">@Model.Estado</dd>
+
+            <dt class="col-sm-4">Mesa asignada</dt>
+            <dd class="col-sm-8">
+                @if (Model.Mesa != null)
+                {
+                    <span>Mesa @Model.Mesa.Numero - @Model.Mesa.Ubicacion</span>
+                }
+                else
+                {
+                    <span>Sin mesa asignada</span>
+                }
+            </dd>
+        </dl>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.ReservaId"
+           class="btn btn-primary">Editar</a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">Volver a la lista</a>
+    </div>
+</div>

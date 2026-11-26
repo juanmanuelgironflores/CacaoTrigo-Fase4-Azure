@@ -1,0 +1,9 @@
+**/bin/
+**/obj/
+**/.vs/
+.git/
+artifacts/
+appsettings*.json
+**/appsettings*.json
+**/secrets*.json
+**/launchSettings.json

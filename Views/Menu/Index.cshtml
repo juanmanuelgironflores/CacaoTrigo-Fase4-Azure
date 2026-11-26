@@ -1,0 +1,83 @@
+@model CacaoTrigo.Models.ViewModels.MenuViewModel
+
+@{
+    ViewData["Title"] = "Menú";
+    var esCliente = User.IsInRole(RolesApp.Cliente);
+    var esAdmin = User.IsInRole(RolesApp.Administrador);
+    var autenticado = User.Identity?.IsAuthenticated == true;
+}
+
+<div class="ct-pagehead">
+    <h1>Nuestro menú</h1>
+    <p>Elige lo que quieres y arma tu pedido.</p>
+</div>
+
+<div class="ct-chips" role="navigation" aria-label="Categorías">
+    <a class="ct-chip @(Model.CategoriaSeleccionada == null ? "active" : "")" asp-action="Index">Todo</a>
+    @foreach (var categoria in Model.Categorias)
+    {
+        <a class="ct-chip @(Model.CategoriaSeleccionada == categoria.CategoriaId ? "active" : "")"
+           asp-action="Index"
+           asp-route-categoriaId="@categoria.CategoriaId">@categoria.Nombre</a>
+    }
+</div>
+
+@if (!Model.Productos.Any())
+{
+    <p class="ct-empty py-5">Por ahora no hay productos disponibles en esta categoría.</p>
+}
+else
+{
+    <div class="ct-menu">
+        @foreach (var producto in Model.Productos)
+        {
+            <article class="ct-item">
+                @if (!string.IsNullOrWhiteSpace(producto.ImagenUrl))
+                {
+                    <img class="ct-item__img" src="@producto.ImagenUrl" alt="@producto.Nombre" loading="lazy" />
+                }
+                else
+                {
+                    <span class="ct-item__img ct-item__img--empty" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 24h34v14a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14V24Z" /><path d="M46 28h4a6 6 0 0 1 0 12h-5" /><path d="M8 56h42" /></svg>
+                    </span>
+                }
+
+                <div class="ct-item__body">
+                    <span class="ct-item__cat">@producto.Categoria?.Nombre</span>
+                    <h2 class="ct-item__name">@producto.Nombre</h2>
+                    @if (!string.IsNullOrWhiteSpace(producto.Descripcion))
+                    {
+                        <p class="ct-item__desc">@producto.Descripcion</p>
+                    }
+                    <div class="ct-item__foot">
+                        <span class="ct-item__price">$@producto.Precio.ToString("0.00")</span>
+
+                        @if (esCliente)
+                        {
+                            <form asp-controller="Carrito" asp-action="Agregar" method="post" class="ct-item__buy">
+                                <input type="hidden" name="productoId" value="@producto.ProductoId" />
+                                <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
+                                <label class="visually-hidden" for="cant-@producto.ProductoId">Cantidad de @producto.Nombre</label>
+                                <input id="cant-@producto.ProductoId" class="form-control ct-qty" type="number" name="cantidad" value="1" min="1" max="99" />
+                                <button type="submit" class="btn btn-primary btn-sm">Agregar</button>
+                            </form>
+                        }
+                        else if (!autenticado)
+                        {
+                            <a class="btn btn-outline-primary btn-sm"
+                               asp-controller="Cuenta"
+                               asp-action="Login"
+                               asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)">Ingresa para pedir</a>
+                        }
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+}
+
+@if (esAdmin)
+{
+    <p class="ct-note">Estás viendo el menú como lo ven los clientes. Para editarlo, ve a <a asp-controller="Productos" asp-action="Index">Productos</a>.</p>
+}

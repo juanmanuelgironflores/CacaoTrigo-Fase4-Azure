@@ -1,0 +1,49 @@
+@model IEnumerable<CacaoTrigo.Models.ViewModels.UsuarioListadoViewModel>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h1 class="mb-0">Usuarios</h1>
+        <a asp-action="CrearAdministrador" class="btn btn-primary">Nuevo administrador</a>
+    </div>
+
+    <p class="text-muted">
+        Los clientes se registran por su cuenta. Desde aquí solo se pueden agregar administradores.
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo electrónico</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+                            <td>@usuario.NombreCompleto</td>
+                            <td>@usuario.Correo</td>
+                            <td>
+                                <span class="ct-badge @(usuario.Rol == RolesApp.Administrador ? "ct-badge--admin" : "ct-badge--cliente")">@usuario.Rol</span>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">No hay usuarios registrados.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

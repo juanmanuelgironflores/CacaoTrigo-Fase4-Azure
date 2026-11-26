@@ -1,0 +1,49 @@
+@model CacaoTrigo.Models.Promocion
+
+@{
+    ViewData["Title"] = "Eliminar promoción";
+    var descuento = Model.EsPorcentaje
+        ? $"{Model.ValorDescuento:N2} %"
+        : $"{Model.ValorDescuento:C2}";
+}
+
+<h1>Eliminar promoción</h1>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar esta promoción? Esta acción no se puede deshacer.
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-4">Nombre</dt>
+            <dd class="col-sm-8">@Model.Nombre</dd>
+
+            <dt class="col-sm-4">Descripción</dt>
+            <dd class="col-sm-8">@Model.Descripcion</dd>
+
+            <dt class="col-sm-4">Descuento</dt>
+            <dd class="col-sm-8">@descuento</dd>
+
+            <dt class="col-sm-4">Fecha de inicio</dt>
+            <dd class="col-sm-8">@Model.FechaInicio.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt class="col-sm-4">Fecha de fin</dt>
+            <dd class="col-sm-8">@Model.FechaFin.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt class="col-sm-4">Condiciones</dt>
+            <dd class="col-sm-8">@(string.IsNullOrWhiteSpace(Model.Condiciones) ? "Sin condiciones" : Model.Condiciones)</dd>
+
+            <dt class="col-sm-4">Activa</dt>
+            <dd class="col-sm-8">@(Model.Activa ? "Sí" : "No")</dd>
+        </dl>
+
+        <form asp-action="Delete" asp-route-id="@Model.PromocionId" method="post">
+            <input type="hidden" asp-for="PromocionId" />
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

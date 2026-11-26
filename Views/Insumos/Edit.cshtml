@@ -1,0 +1,50 @@
+@model CacaoTrigo.Models.Insumo
+
+@{
+    ViewData["Title"] = "Editar insumo";
+}
+
+<div class="container py-4">
+    <h1>Editar insumo</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" asp-route-id="@Model.InsumoId" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="InsumoId" />
+
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label">Nombre</label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UnidadMedida" class="form-label">Unidad de medida</label>
+                    <input asp-for="UnidadMedida" class="form-control" />
+                    <span asp-validation-for="UnidadMedida" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CantidadDisponible" class="form-label">Cantidad disponible</label>
+                    <input asp-for="CantidadDisponible"
+                           type="number"
+                           step="0.001"
+                           class="form-control" />
+                    <span asp-validation-for="CantidadDisponible" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

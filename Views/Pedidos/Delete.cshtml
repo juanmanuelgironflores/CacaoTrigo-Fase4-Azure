@@ -1,0 +1,42 @@
+@model CacaoTrigo.Models.Pedido
+
+@{
+    ViewData["Title"] = "Eliminar pedido";
+}
+
+<div class="container py-4">
+    <h1>Eliminar pedido</h1>
+
+    <div class="alert alert-warning" role="alert">
+        ¿Seguro que deseas eliminar este pedido? Esta acción no se puede deshacer.
+    </div>
+
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Fecha y hora</dt>
+        <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</dd>
+
+        <dt class="col-sm-3">Estado</dt>
+        <dd class="col-sm-9">@Model.Estado</dd>
+
+        <dt class="col-sm-3">Total</dt>
+        <dd class="col-sm-9">@Model.Total.ToString("C2")</dd>
+
+        <dt class="col-sm-3">Nombre de contacto</dt>
+        <dd class="col-sm-9">@Model.NombreContacto</dd>
+
+        <dt class="col-sm-3">Teléfono de contacto</dt>
+        <dd class="col-sm-9">@Model.TelefonoContacto</dd>
+
+        <dt class="col-sm-3">Dirección de entrega</dt>
+        <dd class="col-sm-9">@Model.DireccionEntrega</dd>
+    </dl>
+
+    <form asp-action="Delete" asp-route-pedidoid="@Model.PedidoId" method="post">
+        <input type="hidden" asp-for="PedidoId" />
+
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

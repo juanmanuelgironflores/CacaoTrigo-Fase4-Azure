@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+artifacts/
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
+secrets.json
+secrets.*.json
+*.user
+*.suo

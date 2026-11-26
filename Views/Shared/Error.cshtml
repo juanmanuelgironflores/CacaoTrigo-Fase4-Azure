@@ -1,0 +1,18 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="ct-auth ct-auth--compact">
+    <div class="ct-auth__card text-center">
+        <h1>Algo salió mal</h1>
+        <p class="ct-auth__lead">Ocurrió un error al procesar tu solicitud. Inténtalo de nuevo en unos momentos.</p>
+
+        @if (Model.ShowRequestId)
+        {
+            <p class="text-muted small">Código de la solicitud: <code>@Model.RequestId</code></p>
+        }
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Volver al inicio</a>
+    </div>
+</div>

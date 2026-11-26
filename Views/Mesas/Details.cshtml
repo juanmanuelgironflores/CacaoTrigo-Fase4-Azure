@@ -1,0 +1,37 @@
+@model CacaoTrigo.Models.Mesa
+
+@{
+    ViewData["Title"] = "Detalles de la mesa";
+}
+
+<h1>Detalles de la mesa</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-4">Número de mesa</dt>
+            <dd class="col-sm-8">@Model.Numero</dd>
+
+            <dt class="col-sm-4">Capacidad</dt>
+            <dd class="col-sm-8">@Model.Capacidad personas</dd>
+
+            <dt class="col-sm-4">Ubicación</dt>
+            <dd class="col-sm-8">
+                @(string.IsNullOrWhiteSpace(Model.Ubicacion)
+                    ? "No especificada"
+                    : Model.Ubicacion)
+            </dd>
+
+            <dt class="col-sm-4">Accesible</dt>
+            <dd class="col-sm-8">@(Model.Accesible ? "Sí" : "No")</dd>
+        </dl>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.MesaId"
+           class="btn btn-primary">Editar</a>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">Volver a la lista</a>
+    </div>
+</div>

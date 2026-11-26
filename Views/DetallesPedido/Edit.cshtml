@@ -1,0 +1,59 @@
+@model CacaoTrigo.Models.DetallePedido
+
+@{
+    ViewData["Title"] = "Editar producto del pedido";
+}
+
+<h1>Editar producto del pedido</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit"
+              asp-route-id="@Model.DetallePedidoId"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="DetallePedidoId" />
+
+            <div class="mb-3">
+                <label asp-for="PedidoId" class="form-label">Pedido</label>
+                <select asp-for="PedidoId"
+                        asp-items="ViewBag.PedidoId"
+                        class="form-select">
+                    <option value="">-- Selecciona un pedido --</option>
+                </select>
+                <span asp-validation-for="PedidoId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ProductoId" class="form-label">Producto</label>
+                <select asp-for="ProductoId"
+                        asp-items="ViewBag.ProductoId"
+                        class="form-select">
+                    <option value="">-- Selecciona un producto --</option>
+                </select>
+                <span asp-validation-for="ProductoId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Cantidad" class="form-label">Cantidad</label>
+                <input asp-for="Cantidad"
+                       type="number"
+                       min="1"
+                       class="form-control" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

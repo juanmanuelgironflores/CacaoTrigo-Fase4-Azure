@@ -1,0 +1,25 @@
+@model CacaoTrigo.Models.Categoria
+
+@{
+    ViewData["Title"] = "Eliminar categoría";
+}
+
+<h1>Eliminar categoría</h1>
+
+<div class="alert alert-warning" role="alert">
+    ¿Seguro que deseas eliminar esta categoría? Esta acción no se puede deshacer.
+</div>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Html.DisplayFor(model => model.Nombre)</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.CategoriaId" method="post">
+    <input type="hidden" asp-for="CategoriaId" />
+
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

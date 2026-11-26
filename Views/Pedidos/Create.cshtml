@@ -1,0 +1,78 @@
+@model CacaoTrigo.Models.Pedido
+
+@{
+    ViewData["Title"] = "Crear pedido";
+}
+
+<h1>Crear pedido</h1>
+<h2>Pedido</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Fecha" class="form-label">Fecha y hora</label>
+                <input asp-for="Fecha"
+                       type="datetime-local"
+                       asp-format="{0:yyyy-MM-ddTHH:mm}"
+                       step="60"
+                       class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Estado" class="form-label">Estado</label>
+                <select asp-for="Estado" class="form-select">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En preparación">En preparación</option>
+                    <option value="Listo">Listo</option>
+                    <option value="Entregado">Entregado</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Total" class="form-label">Total</label>
+                <input asp-for="Total"
+                       type="number"
+                       min="0"
+                       step="0.01"
+                       class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NombreContacto" class="form-label">Nombre de contacto</label>
+                <input asp-for="NombreContacto" class="form-control" />
+                <span asp-validation-for="NombreContacto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TelefonoContacto" class="form-label">Teléfono de contacto</label>
+                <input asp-for="TelefonoContacto" type="tel" class="form-control" />
+                <span asp-validation-for="TelefonoContacto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DireccionEntrega" class="form-label">Dirección de entrega</label>
+                <textarea asp-for="DireccionEntrega"
+                          rows="3"
+                          class="form-control"></textarea>
+                <span asp-validation-for="DireccionEntrega" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear pedido</button>
+            <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

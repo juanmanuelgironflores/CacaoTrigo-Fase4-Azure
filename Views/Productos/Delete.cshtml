@@ -1,0 +1,51 @@
+@model CacaoTrigo.Models.Producto
+
+@{
+    ViewData["Title"] = "Eliminar producto";
+}
+
+<h1>Eliminar producto</h1>
+
+<div class="alert alert-warning" role="alert">
+    ¿Seguro que deseas eliminar este producto? Esta acción no se puede deshacer.
+</div>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre</dd>
+
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">
+        @(string.IsNullOrWhiteSpace(Model.Descripcion) ? "Sin descripción" : Model.Descripcion)
+    </dd>
+
+    <dt class="col-sm-3">Precio</dt>
+    <dd class="col-sm-9">@Model.Precio.ToString("C2")</dd>
+
+    <dt class="col-sm-3">Imagen</dt>
+    <dd class="col-sm-9">
+        @if (string.IsNullOrWhiteSpace(Model.ImagenUrl))
+        {
+            <span class="text-muted">Sin imagen</span>
+        }
+        else
+        {
+            <img class="ct-thumb ct-thumb--lg" src="@Model.ImagenUrl" alt="@Model.Nombre" />
+        }
+    </dd>
+
+    <dt class="col-sm-3">Disponible</dt>
+    <dd class="col-sm-9">@(Model.Disponible ? "Sí" : "No")</dd>
+
+    <dt class="col-sm-3">Categoría</dt>
+    <dd class="col-sm-9">@(Model.Categoria?.Nombre ?? "Sin categoría")</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.ProductoId" method="post">
+    <input type="hidden" asp-for="ProductoId" />
+
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

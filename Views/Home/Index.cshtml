@@ -1,0 +1,313 @@
+@model IEnumerable<CacaoTrigo.Models.Producto>
+
+@{
+    ViewData["Title"] = "Inicio";
+    ViewData["FullWidth"] = true;
+
+    var esAdmin = User.IsInRole(RolesApp.Administrador);
+    var esCliente = User.IsInRole(RolesApp.Cliente);
+}
+
+<!-- Hero -->
+<section class="ct-hero">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="ctBean" viewBox="0 0 24 34">
+                <ellipse cx="12" cy="17" rx="10" ry="15" fill="#4A2B1A" />
+                <path d="M12 3c-6 8 6 20 0 28" stroke="#8A6247" stroke-width="1.6" fill="none" stroke-linecap="round" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Taza con latte art -->
+    <svg class="ct-decor ct-decor--cup" viewBox="0 0 240 220" aria-hidden="true" focusable="false">
+        <defs>
+            <radialGradient id="ctCoffee" cx="50%" cy="45%" r="55%">
+                <stop offset="0" stop-color="#D7B58C" />
+                <stop offset=".7" stop-color="#B58555" />
+                <stop offset="1" stop-color="#8E5F38" />
+            </radialGradient>
+        </defs>
+        <circle cx="110" cy="110" r="102" fill="#F8F3EE" stroke="#E4D7CB" />
+        <circle cx="110" cy="110" r="86" fill="none" stroke="#EADFD4" />
+        <path d="M176 96h24a16 16 0 0 1 0 32h-24" fill="none" stroke="#E4D7CB" stroke-width="13" stroke-linecap="round" />
+        <path d="M176 96h24a16 16 0 0 1 0 32h-24" fill="none" stroke="#FFFDFB" stroke-width="9" stroke-linecap="round" />
+        <circle cx="110" cy="110" r="72" fill="#FFFDFB" stroke="#E4D7CB" />
+        <circle cx="110" cy="110" r="60" fill="#F3EBE3" />
+        <circle cx="110" cy="110" r="54" fill="url(#ctCoffee)" />
+        <g transform="translate(110 110)">
+            <path d="M0 -36C20 -26 24 2 0 34C-24 2 -20 -26 0 -36Z" fill="#F7EBDA" opacity=".95" />
+            <path d="M0 -26V28M-10 -12Q0 -4 10 -12M-12 0Q0 8 12 0M-9 12Q0 19 9 12" fill="none" stroke="#B58555" stroke-width="2" stroke-linecap="round" />
+        </g>
+    </svg>
+
+    <!-- Plato con muffin -->
+    <svg class="ct-decor ct-decor--muffin" viewBox="0 0 260 260" aria-hidden="true" focusable="false">
+        <defs>
+            <radialGradient id="ctMuffin" cx="42%" cy="38%" r="65%">
+                <stop offset="0" stop-color="#E0A862" />
+                <stop offset=".65" stop-color="#C07F3E" />
+                <stop offset="1" stop-color="#8F5527" />
+            </radialGradient>
+        </defs>
+        <circle cx="130" cy="130" r="122" fill="#F9F4EE" stroke="#E4D7CB" />
+        <circle cx="130" cy="130" r="104" fill="none" stroke="#EADFD4" />
+        <circle cx="130" cy="130" r="84" fill="url(#ctMuffin)" />
+        <g fill="#E8BB7C" opacity=".55">
+            <circle cx="88" cy="118" r="2.5" /><circle cx="112" cy="84" r="2" /><circle cx="170" cy="108" r="2.5" />
+            <circle cx="150" cy="150" r="2" /><circle cx="104" cy="170" r="2.5" /><circle cx="180" cy="146" r="2" />
+        </g>
+        <g fill="#3E2415">
+            <ellipse cx="100" cy="100" rx="10" ry="7" transform="rotate(20 100 100)" />
+            <ellipse cx="152" cy="92" rx="9" ry="6" transform="rotate(-15 152 92)" />
+            <ellipse cx="174" cy="132" rx="10" ry="7" transform="rotate(-25 174 132)" />
+            <ellipse cx="122" cy="148" rx="9" ry="7" transform="rotate(10 122 148)" />
+            <ellipse cx="90" cy="142" rx="7" ry="5" transform="rotate(35 90 142)" />
+            <ellipse cx="146" cy="178" rx="9" ry="6" transform="rotate(30 146 178)" />
+            <ellipse cx="128" cy="112" rx="7" ry="5" transform="rotate(-10 128 112)" />
+        </g>
+    </svg>
+
+    <!-- Ramita -->
+    <svg class="ct-decor ct-decor--sprig" viewBox="0 0 200 160" aria-hidden="true" focusable="false">
+        <path d="M200 8C150 34 108 66 62 124" fill="none" stroke="#4F5B3A" stroke-width="2" stroke-linecap="round" />
+        <g fill="#5F6F4A">
+            <path d="M0 0C14-14 34-14 46 0C34 14 14 14 0 0Z" transform="translate(168 24) rotate(-150)" />
+            <path d="M0 0C14-14 34-14 46 0C34 14 14 14 0 0Z" transform="translate(150 40) rotate(40)" />
+            <path d="M0 0C14-14 34-14 46 0C34 14 14 14 0 0Z" transform="translate(128 56) rotate(-155)" />
+            <path d="M0 0C14-14 34-14 46 0C34 14 14 14 0 0Z" transform="translate(110 74) rotate(45)" />
+            <path d="M0 0C14-14 34-14 46 0C34 14 14 14 0 0Z" transform="translate(88 94) rotate(-160)" />
+            <path d="M0 0C14-14 34-14 46 0C34 14 14 14 0 0Z" transform="translate(74 110) rotate(50)" />
+        </g>
+    </svg>
+
+    <!-- Granos -->
+    <svg class="ct-decor ct-decor--bean" style="left:24%;top:12%;width:22px;transform:rotate(25deg)" viewBox="0 0 24 34" aria-hidden="true"><use href="#ctBean" /></svg>
+    <svg class="ct-decor ct-decor--bean" style="left:30%;top:20%;width:17px;transform:rotate(-40deg)" viewBox="0 0 24 34" aria-hidden="true"><use href="#ctBean" /></svg>
+    <svg class="ct-decor ct-decor--bean" style="left:9%;top:68%;width:20px;transform:rotate(70deg)" viewBox="0 0 24 34" aria-hidden="true"><use href="#ctBean" /></svg>
+    <svg class="ct-decor ct-decor--bean" style="right:30%;top:78%;width:19px;transform:rotate(-20deg)" viewBox="0 0 24 34" aria-hidden="true"><use href="#ctBean" /></svg>
+    <svg class="ct-decor ct-decor--bean" style="right:24%;top:70%;width:15px;transform:rotate(55deg)" viewBox="0 0 24 34" aria-hidden="true"><use href="#ctBean" /></svg>
+
+    <div class="ct-hero__inner">
+        <span class="ct-script">Bienvenido a Cacao y Trigo</span>
+        <h1>Buen pan,<br />buen café</h1>
+        @if (esAdmin)
+        {
+            <p>Administra el menú, las mesas, las reservas y los pedidos desde un solo lugar.</p>
+            <div class="ct-hero__actions">
+                <a class="btn btn-primary" asp-controller="Productos" asp-action="Index">Ver productos</a>
+                <a class="btn btn-outline-primary" asp-controller="Pedidos" asp-action="Index">Ver pedidos</a>
+            </div>
+        }
+        else
+        {
+            <p>Panadería, café y restaurante. Elige tu pedido del menú o reserva tu mesa en la terraza o dentro del local.</p>
+            <div class="ct-hero__actions">
+                <a class="btn btn-primary" asp-controller="Menu" asp-action="Index">Ver el menú</a>
+                <a class="btn btn-outline-primary" asp-controller="MisReservas" asp-action="Crear">Reservar mesa</a>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Accesos principales -->
+<section class="ct-section">
+    <div class="container">
+        <div class="ct-section__head">
+            <svg class="ct-leaf" viewBox="0 0 28 22" aria-hidden="true"><path d="M14 20C14 12 9 6 2 5c0 8 4 13 12 15Z" fill="currentColor" /><path d="M14 20c0-8 5-14 12-15 0 8-4 13-12 15Z" fill="currentColor" opacity=".75" /></svg>
+            <h2>@(esAdmin ? "Panel de administración" : "Pide, reserva y disfruta")</h2>
+            <p>@(esAdmin ? "Gestiona cada parte del negocio con calma y a un clic de distancia." : "Todo lo que necesitas para tu próxima visita, en un solo lugar.")</p>
+        </div>
+
+        <div class="ct-features">
+            @if (esAdmin)
+            {
+                <article class="ct-feature">
+                    <div class="ct-feature__art" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 24h34v14a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14V24Z" /><path d="M46 28h4a6 6 0 0 1 0 12h-5" /><path d="M22 10c-2 3 2 5 0 8M30 8c-2 3 2 5 0 10M38 10c-2 3 2 5 0 8" /><path d="M8 56h42" /></svg></div>
+                    <div class="ct-feature__body">
+                        <h3>Catálogo</h3>
+                        <p>Consulta y administra categorías, productos e insumos.</p>
+                        <div class="ct-feature__links">
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Categorias" asp-action="Index">Categorías</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Productos" asp-action="Index">Productos</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Insumos" asp-action="Index">Insumos</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="ct-feature">
+                    <div class="ct-feature__art ct-feature__art--caramel" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="44" height="40" rx="4" /><path d="M10 26h44M22 8v10M42 8v10M24 40l6 6 11-12" /></svg></div>
+                    <div class="ct-feature__body">
+                        <h3>Operación</h3>
+                        <p>Organiza las mesas, las reservas y los pedidos.</p>
+                        <div class="ct-feature__links">
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Mesas" asp-action="Index">Mesas</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Reservas" asp-action="Index">Reservas</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Pedidos" asp-action="Index">Pedidos</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="DetallesPedido" asp-action="Index">Detalles</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="ct-feature">
+                    <div class="ct-feature__art ct-feature__art--olive" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 32 32 8h20v20L28 52a4 4 0 0 1-6 0L8 38a4 4 0 0 1 0-6Z" /><circle cx="27" cy="29" r="3" /><circle cx="37" cy="39" r="3" /><path d="M39 27 25 41" /></svg></div>
+                    <div class="ct-feature__body">
+                        <h3>Promociones y equipo</h3>
+                        <p>Administra las promociones y las cuentas de quienes usan el sistema.</p>
+                        <div class="ct-feature__links">
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Promociones" asp-action="Index">Promociones</a>
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                        </div>
+                    </div>
+                </article>
+            }
+            else
+            {
+                <article class="ct-feature">
+                    <div class="ct-feature__art" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 24h34v14a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14V24Z" /><path d="M46 28h4a6 6 0 0 1 0 12h-5" /><path d="M22 10c-2 3 2 5 0 8M30 8c-2 3 2 5 0 10M38 10c-2 3 2 5 0 8" /><path d="M8 56h42" /></svg></div>
+                    <div class="ct-feature__body">
+                        <h3>El menú</h3>
+                        <p>Mira lo que preparamos hoy y elige lo que quieres pedir.</p>
+                        <div class="ct-feature__links">
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Menu" asp-action="Index">Ver el menú</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="ct-feature">
+                    <div class="ct-feature__art ct-feature__art--caramel" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="44" height="40" rx="4" /><path d="M10 26h44M22 8v10M42 8v10M24 40l6 6 11-12" /></svg></div>
+                    <div class="ct-feature__body">
+                        <h3>Tu mesa</h3>
+                        <p>Reserva en la terraza o dentro del local, con la fecha y la hora que prefieras.</p>
+                        <div class="ct-feature__links">
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="MisReservas" asp-action="Crear">Reservar mesa</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="ct-feature">
+                    <div class="ct-feature__art ct-feature__art--olive" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="22" r="10" /><path d="M12 54c2-12 10-18 20-18s18 6 20 18" /></svg></div>
+                    <div class="ct-feature__body">
+                        <h3>@(esCliente ? "Tu historial" : "Tu cuenta")</h3>
+                        <p>@(esCliente ? "Revisa tus compras y tus reservas anteriores." : "Crea una cuenta para hacer pedidos y reservas.")</p>
+                        <div class="ct-feature__links">
+                            @if (esCliente)
+                            {
+                                <a class="btn btn-outline-primary btn-sm" asp-controller="MisPedidos" asp-action="Index">Mis pedidos</a>
+                                <a class="btn btn-outline-primary btn-sm" asp-controller="MisReservas" asp-action="Index">Mis reservas</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-outline-primary btn-sm" asp-controller="Cuenta" asp-action="Login">Ingresar</a>
+                                <a class="btn btn-outline-primary btn-sm" asp-controller="Cuenta" asp-action="Registro">Crear cuenta</a>
+                            }
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Menú destacado -->
+<section class="ct-section" style="padding-top:0">
+    <div class="container">
+        <div class="ct-section__head">
+            <svg class="ct-leaf" viewBox="0 0 28 22" aria-hidden="true"><path d="M14 20C14 12 9 6 2 5c0 8 4 13 12 15Z" fill="currentColor" /><path d="M14 20c0-8 5-14 12-15 0 8-4 13-12 15Z" fill="currentColor" opacity=".75" /></svg>
+            <h2>Del menú</h2>
+            <p>Algunos de los productos disponibles hoy.</p>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="ct-dishes">
+                @foreach (var p in Model)
+                {
+                    <a class="ct-dish" asp-controller="Menu" asp-action="Index" asp-route-categoriaId="@p.CategoriaId">
+                        @if (!string.IsNullOrWhiteSpace(p.ImagenUrl))
+                        {
+                            <img class="ct-dish__img" src="@p.ImagenUrl" alt="@p.Nombre" loading="lazy" />
+                        }
+                        else
+                        {
+                            <span class="ct-dish__img ct-dish__img--empty" aria-hidden="true">
+                                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 24h34v14a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14V24Z" /><path d="M46 28h4a6 6 0 0 1 0 12h-5" /><path d="M8 56h42" /></svg>
+                            </span>
+                        }
+                        <span class="ct-dish__name">@p.Nombre</span>
+                        <span class="ct-dish__price">$@p.Precio.ToString("0.00")</span>
+                    </a>
+                }
+            </div>
+
+            <div class="ct-more">
+                <a class="btn btn-primary btn-sm" asp-controller="Menu" asp-action="Index">Ver el menú completo</a>
+            </div>
+        }
+        else
+        {
+            <p class="ct-empty">
+                Aún no hay productos disponibles.
+                @if (esAdmin)
+                {
+                    <a asp-controller="Productos" asp-action="Create">Crea el primero</a>
+                }
+            </p>
+        }
+    </div>
+</section>
+
+<!-- Reservas -->
+<section class="ct-visit">
+    <div class="container ct-visit__grid">
+        <div>
+            <h2>@(esAdmin ? "Mesas y reservas" : "Reserva una mesa")</h2>
+            <div class="ct-rule" aria-hidden="true">
+                <svg class="ct-leaf" style="width:18px;height:14px" viewBox="0 0 28 22"><path d="M14 20C14 12 9 6 2 5c0 8 4 13 12 15Z" fill="currentColor" /><path d="M14 20c0-8 5-14 12-15 0 8-4 13-12 15Z" fill="currentColor" opacity=".75" /></svg>
+            </div>
+            @if (esAdmin)
+            {
+                <p>Confirma reservas, asigna mesas y da seguimiento a los pedidos del día.</p>
+                <a class="btn btn-primary" asp-controller="Reservas" asp-action="Index">Ver reservas</a>
+            }
+            else
+            {
+                <p>Elige terraza o interior, la fecha y la hora. Nosotros te guardamos el lugar.</p>
+                <a class="btn btn-primary" asp-controller="MisReservas" asp-action="Crear">Reservar ahora</a>
+            }
+        </div>
+
+        <div class="ct-tiles">
+            @if (esAdmin)
+            {
+                <a class="ct-tile" asp-controller="Mesas" asp-action="Index">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="32" cy="24" rx="22" ry="8" /><path d="M32 32v20M22 54h20" /></svg>
+                    <span class="ct-tile__name">Mesas<span class="ct-tile__hint">Ver el salón</span></span>
+                </a>
+                <a class="ct-tile ct-tile--caramel" asp-controller="Reservas" asp-action="Index">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="44" height="40" rx="4" /><path d="M10 26h44M22 8v10M42 8v10" /></svg>
+                    <span class="ct-tile__name">Reservas<span class="ct-tile__hint">Ver la agenda</span></span>
+                </a>
+                <a class="ct-tile ct-tile--olive" asp-controller="Pedidos" asp-action="Index">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 10h36v44l-6-4-6 4-6-4-6 4-6-4-6 4V10Z" /><path d="M22 22h20M22 32h20" /></svg>
+                    <span class="ct-tile__name">Pedidos<span class="ct-tile__hint">Ver los pedidos</span></span>
+                </a>
+            }
+            else
+            {
+                <a class="ct-tile" asp-controller="MisReservas" asp-action="Crear" asp-route-zona="Terraza">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="10" /><path d="M32 8v8M32 48v8M8 32h8M48 32h8M15 15l6 6M43 43l6 6M49 15l-6 6M21 43l-6 6" /></svg>
+                    <span class="ct-tile__name">Terraza<span class="ct-tile__hint">Al aire libre</span></span>
+                </a>
+                <a class="ct-tile ct-tile--caramel" asp-controller="MisReservas" asp-action="Crear" asp-route-zona="Interior">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 30 32 10l24 20" /><path d="M14 26v28h36V26" /><path d="M27 54V38h10v16" /></svg>
+                    <span class="ct-tile__name">Interior<span class="ct-tile__hint">Dentro del local</span></span>
+                </a>
+                <a class="ct-tile ct-tile--olive" asp-controller="Menu" asp-action="Index">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="32" cy="24" rx="22" ry="8" /><path d="M32 32v20M22 54h20" /></svg>
+                    <span class="ct-tile__name">El menú<span class="ct-tile__hint">Antes de llegar</span></span>
+                </a>
+            }
+        </div>
+    </div>
+</section>

@@ -1,0 +1,64 @@
+@model IEnumerable<CacaoTrigo.Models.Promocion>
+
+@{
+    ViewData["Title"] = "Promociones";
+}
+
+<h1>Promociones</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear promoción</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Descuento</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de fin</th>
+                <th>Condiciones</th>
+                <th>Activa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Descripcion</td>
+                    <td>
+                        @item.ValorDescuento.ToString("0.##")@if (item.EsPorcentaje)
+                        {
+                            <text>%</text>
+                        }
+                        else
+                        {
+                            <text> $</text>
+                        }
+                    </td>
+                    <td>@item.FechaInicio.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.FechaFin.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.Condiciones</td>
+                    <td>@(item.Activa ? "Sí" : "No")</td>
+                    <td class="text-nowrap">
+                        <a asp-action="Edit"
+                           asp-route-id="@item.PromocionId"
+                           class="btn btn-sm btn-outline-primary">Editar</a>
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.PromocionId"
+                           class="btn btn-sm btn-outline-info">Detalles</a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@item.PromocionId"
+                           class="btn btn-sm btn-outline-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

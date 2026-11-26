@@ -1,0 +1,51 @@
+@model CacaoTrigo.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["FullWidth"] = true;
+    ViewData["Title"] = "Ingresar";
+}
+
+<section class="ct-authpage">
+<div class="ct-auth">
+    <img class="ct-auth__logo" src="~/img/logo.png" alt="Cacao y Trigo, panadería, café y restaurante" />
+
+    <div class="ct-auth__card">
+        <h1>Ingresar</h1>
+        <p class="ct-auth__lead">Entra con tu cuenta para pedir y reservar.</p>
+
+        <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Correo" class="form-label"></label>
+                <input asp-for="Correo" type="email" class="form-control" autocomplete="username" autofocus />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Contrasena" class="form-label"></label>
+                <input asp-for="Contrasena" class="form-control" autocomplete="current-password" />
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-4">
+                <input asp-for="Recordarme" class="form-check-input" />
+                <label asp-for="Recordarme" class="form-check-label"></label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+
+        <p class="ct-auth__alt">
+            ¿Aún no tienes cuenta?
+            <a asp-action="Registro">Crea tu cuenta</a>
+        </p>
+    </div>
+</div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

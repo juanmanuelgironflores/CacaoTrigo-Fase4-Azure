@@ -1,0 +1,50 @@
+@model IEnumerable<CacaoTrigo.Models.ViewModels.PedidoHistorialViewModel>
+
+@{
+    ViewData["Title"] = "Mis pedidos";
+}
+
+<div class="ct-pagehead">
+    <h1>Mis pedidos</h1>
+    <p>Tu historial de compras en Cacao y Trigo.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="ct-emptybox">
+        <p>Todavía no has hecho ningún pedido.</p>
+        <a asp-controller="Menu" asp-action="Index" class="btn btn-primary">Ver el menú</a>
+    </div>
+}
+else
+{
+    <div class="ct-history">
+        @foreach (var item in Model)
+        {
+            <article class="ct-order">
+                <header class="ct-order__head">
+                    <div>
+                        <strong>Pedido #@item.Pedido.PedidoId</strong>
+                        <span class="text-muted">@item.Pedido.Fecha.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    <span class="ct-status ct-status--@(item.Pedido.Estado.ToLowerInvariant().Replace(" ", "-"))">@item.Pedido.Estado</span>
+                </header>
+
+                <ul class="ct-order__items">
+                    @foreach (var d in item.Detalles)
+                    {
+                        <li>
+                            <span>@d.Cantidad × @(d.Producto?.Nombre ?? "Producto eliminado")</span>
+                            <span>$@d.Subtotal.ToString("0.00")</span>
+                        </li>
+                    }
+                </ul>
+
+                <footer class="ct-order__foot">
+                    <span class="text-muted">@item.Pedido.DireccionEntrega</span>
+                    <span class="ct-order__total">Total <strong>$@item.Pedido.Total.ToString("0.00")</strong></span>
+                </footer>
+            </article>
+        }
+    </div>
+}

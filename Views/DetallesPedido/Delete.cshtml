@@ -1,0 +1,50 @@
+@model CacaoTrigo.Models.DetallePedido
+
+@{
+    ViewData["Title"] = "Eliminar producto del pedido";
+}
+
+<h1>Eliminar producto del pedido</h1>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas quitar este producto del pedido?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Pedido</dt>
+    <dd class="col-sm-9">
+        Pedido #@Model.PedidoId
+        @if (Model.Pedido != null)
+        {
+            <span> - @Model.Pedido.NombreContacto</span>
+        }
+    </dd>
+
+    <dt class="col-sm-3">Producto</dt>
+    <dd class="col-sm-9">
+        @if (Model.Producto != null)
+        {
+            @Model.Producto.Nombre
+        }
+        else
+        {
+            <span>Producto no disponible</span>
+        }
+    </dd>
+
+    <dt class="col-sm-3">Cantidad</dt>
+    <dd class="col-sm-9">@Model.Cantidad</dd>
+
+    <dt class="col-sm-3">Precio unitario</dt>
+    <dd class="col-sm-9">$@Model.PrecioUnitario.ToString("0.00")</dd>
+
+    <dt class="col-sm-3">Subtotal</dt>
+    <dd class="col-sm-9">$@Model.Subtotal.ToString("0.00")</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="DetallePedidoId" />
+
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

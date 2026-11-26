@@ -1,0 +1,288 @@
+@using CacaoTrigo.Helpers
+@using CacaoTrigo.Services
+@{
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var anchoCompleto = ViewData["FullWidth"] as bool? ?? false;
+    string Activo(params string[] controladores) => controladores.Contains(ctrl) ? "active" : "";
+
+    var autenticado = User.Identity?.IsAuthenticated == true;
+    var esAdmin = User.IsInRole(RolesApp.Administrador);
+    var esCliente = User.IsInRole(RolesApp.Cliente);
+    var nombreCompleto = User.FindFirst(AppClaimsPrincipalFactory.TipoNombre)?.Value
+                         ?? User.Identity?.Name ?? string.Empty;
+    var primerNombre = nombreCompleto
+        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+        .FirstOrDefault() ?? nombreCompleto;
+    var inicial = primerNombre.Length > 0 ? primerNombre.Substring(0, 1).ToUpperInvariant() : "?";
+    var enCarrito = esCliente ? CarritoSesion.Cantidad(Context.Session) : 0;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cacao y Trigo</title>
+    <script type="importmap"></script>
+    <link rel="icon" href="~/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CacaoTrigo.styles.css" asp-append-version="true" />
+</head>
+<body class="@(esAdmin ? "ct-admin" : "")">
+    <div class="ct-topbar">
+        <div class="container">
+            <span>Panadería, café y restaurante</span>
+            <span class="ct-topbar__links">
+                @if (autenticado)
+                {
+                    <span>Hola, @primerNombre</span>
+                    <span class="ct-role">@(esAdmin ? RolesApp.Administrador : RolesApp.Cliente)</span>
+                }
+                else
+                {
+                    <span>Pide en línea y reserva tu mesa</span>
+                }
+            </span>
+        </div>
+    </div>
+
+    <header class="ct-header">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="ct-brand" asp-area="" asp-controller="Home" asp-action="Index" aria-label="Cacao y Trigo, inicio">
+                    <img class="ct-brand__mark ct-brand__mark--claro" src="~/img/logo-emblema.png" alt="" width="46" height="46" />
+                    <img class="ct-brand__mark ct-brand__mark--oscuro" src="~/img/logo-emblema-oscuro.png" alt="" width="46" height="46" />
+                    <span class="ct-brand__text">
+                        <span class="ct-brand__name">CACAO <em>y</em> TRIGO</span>
+                        <span class="ct-brand__tag">PANADERÍA · CAFÉ · RESTAURANTE</span>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarPrincipal"
+                        aria-controls="navbarPrincipal"
+                        aria-expanded="false"
+                        aria-label="Mostrar u ocultar navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarPrincipal">
+                    <ul class="navbar-nav ct-nav mx-lg-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link @Activo("Home")"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">Inicio</a>
+                        </li>
+
+                        @if (esAdmin)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle @Activo("Categorias", "Productos", "Insumos")"
+                                   href="#"
+                                   id="menuCatalogo"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Catálogo
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="menuCatalogo">
+                                    <li><a class="dropdown-item" asp-controller="Categorias" asp-action="Index">Categorías</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Productos" asp-action="Index">Productos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Insumos" asp-action="Index">Insumos</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle @Activo("Mesas", "Reservas", "Pedidos", "DetallesPedido", "Promociones")"
+                                   href="#"
+                                   id="menuOperacion"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    Operación
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="menuOperacion">
+                                    <li><a class="dropdown-item" asp-controller="Mesas" asp-action="Index">Mesas</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Reservas" asp-action="Index">Reservas</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="DetallesPedido" asp-action="Index">Detalles de pedidos</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Promociones" asp-action="Index">Promociones</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link @Activo("Usuarios")"
+                                   asp-controller="Usuarios"
+                                   asp-action="Index">Usuarios</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @Activo("Menu")"
+                                   asp-controller="Menu"
+                                   asp-action="Index">Menú</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @Activo("MisReservas")"
+                                   asp-controller="MisReservas"
+                                   asp-action="@(esCliente ? "Index" : "Crear")">@(esCliente ? "Mis reservas" : "Reservar")</a>
+                            </li>
+
+                            @if (esCliente)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @Activo("MisPedidos")"
+                                       asp-controller="MisPedidos"
+                                       asp-action="Index">Mis pedidos</a>
+                                </li>
+                            }
+                        }
+
+                        <li class="nav-item">
+                            <a class="nav-link @Activo("Privacy")"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Privacy">Privacidad</a>
+                        </li>
+                    </ul>
+
+                    <div class="ct-actions">
+                        @if (esCliente)
+                        {
+                            <a class="ct-iconbtn" asp-controller="Carrito" asp-action="Index" aria-label="Mi pedido (@enCarrito productos)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12h-11l-1-12Z" /><path d="M9 8V7a3 3 0 0 1 6 0v1" /></svg>
+                                @if (enCarrito > 0)
+                                {
+                                    <span class="ct-iconbtn__badge">@enCarrito</span>
+                                }
+                            </a>
+                        }
+
+                        @if (autenticado)
+                        {
+                            <div class="dropdown">
+                                <a class="ct-user dropdown-toggle"
+                                   href="#"
+                                   id="menuUsuario"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <span class="ct-user__avatar" aria-hidden="true">@inicial</span>
+                                    <span class="ct-user__name">@primerNombre</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuUsuario">
+                                    <li class="ct-user__head">
+                                        <strong>@nombreCompleto</strong>
+                                        <span>@(esAdmin ? RolesApp.Administrador : RolesApp.Cliente)</span>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Cuenta" asp-action="CambiarContrasena">Cambiar contraseña</a>
+                                    </li>
+                                    <li>
+                                        <form asp-controller="Cuenta" asp-action="Logout" method="post" class="m-0">
+                                            <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="Cuenta" asp-action="Login">Ingresar</a>
+                            <a class="btn btn-primary btn-sm" asp-controller="Cuenta" asp-action="Registro">Crear cuenta</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @if (TempData["Mensaje"] is string mensaje)
+    {
+        <div class="container ct-flash-wrap">
+            <div class="alert ct-flash" role="status">@mensaje</div>
+        </div>
+    }
+    @if (TempData["Error"] is string error)
+    {
+        <div class="container ct-flash-wrap">
+            <div class="alert alert-danger ct-flash" role="alert">@error</div>
+        </div>
+    }
+
+    <main role="main" class="ct-main @(anchoCompleto ? "" : "container")">
+        @RenderBody()
+    </main>
+
+    <footer class="ct-footer">
+        <div class="container ct-footer__main">
+            <div>
+                <a class="ct-brand" asp-area="" asp-controller="Home" asp-action="Index" aria-label="Cacao y Trigo, inicio">
+                    <img class="ct-brand__mark ct-brand__mark--claro" src="~/img/logo-emblema.png" alt="" width="46" height="46" />
+                    <img class="ct-brand__mark ct-brand__mark--oscuro" src="~/img/logo-emblema-oscuro.png" alt="" width="46" height="46" />
+                    <span class="ct-brand__text">
+                        <span class="ct-brand__name">CACAO <em>y</em> TRIGO</span>
+                        <span class="ct-brand__tag">PANADERÍA · CAFÉ · RESTAURANTE</span>
+                    </span>
+                </a>
+                <p class="ct-footer__blurb">
+                    Pan recién hecho, buen café y comida casera. Pide desde aquí o reserva tu mesa.
+                </p>
+            </div>
+
+            <div>
+                <h2>Cacao y Trigo</h2>
+                <ul>
+                    <li><a asp-controller="Menu" asp-action="Index">Menú</a></li>
+                    <li><a asp-controller="MisReservas" asp-action="Crear">Reservar una mesa</a></li>
+                    <li><a asp-controller="Home" asp-action="Privacy">Privacidad</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h2>Tu cuenta</h2>
+                <ul>
+                    @if (esAdmin)
+                    {
+                        <li><a asp-controller="Productos" asp-action="Index">Productos</a></li>
+                        <li><a asp-controller="Reservas" asp-action="Index">Reservas</a></li>
+                        <li><a asp-controller="Pedidos" asp-action="Index">Pedidos</a></li>
+                        <li><a asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                    }
+                    else if (esCliente)
+                    {
+                        <li><a asp-controller="MisPedidos" asp-action="Index">Mis pedidos</a></li>
+                        <li><a asp-controller="MisReservas" asp-action="Index">Mis reservas</a></li>
+                        <li><a asp-controller="Cuenta" asp-action="CambiarContrasena">Cambiar contraseña</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Cuenta" asp-action="Login">Ingresar</a></li>
+                        <li><a asp-controller="Cuenta" asp-action="Registro">Crear cuenta</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="ct-footer__bar">
+            <div class="container">
+                <span>&copy; 2026 Cacao y Trigo. Todos los derechos reservados.</span>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,125 @@
+@model CacaoTrigo.Models.ViewModels.CarritoViewModel
+
+@{
+    ViewData["Title"] = "Mi pedido";
+}
+
+<div class="ct-pagehead">
+    <h1>Mi pedido</h1>
+</div>
+
+@if (!Model.Lineas.Any())
+{
+    <div class="ct-emptybox">
+        <p>Tu pedido está vacío.</p>
+        <a asp-controller="Menu" asp-action="Index" class="btn btn-primary">Ver el menú</a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <ul class="ct-lines">
+                @foreach (var linea in Model.Lineas)
+                {
+                    <li class="ct-line">
+                        @if (!string.IsNullOrWhiteSpace(linea.ImagenUrl))
+                        {
+                            <img class="ct-line__img" src="@linea.ImagenUrl" alt="" />
+                        }
+                        else
+                        {
+                            <span class="ct-line__img ct-line__img--empty" aria-hidden="true"></span>
+                        }
+
+                        <div class="ct-line__info">
+                            <strong>@linea.Nombre</strong>
+                            <span class="text-muted">$@linea.PrecioUnitario.ToString("0.00") c/u</span>
+                        </div>
+
+                        <form asp-action="Actualizar" method="post" class="ct-line__qty">
+                            <input type="hidden" name="productoId" value="@linea.ProductoId" />
+                            <label class="visually-hidden" for="q-@linea.ProductoId">Cantidad de @linea.Nombre</label>
+                            <input id="q-@linea.ProductoId" class="form-control ct-qty" type="number" name="cantidad" value="@linea.Cantidad" min="0" max="99" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">Actualizar</button>
+                        </form>
+
+                        <span class="ct-line__sub">$@linea.Subtotal.ToString("0.00")</span>
+
+                        <form asp-action="Quitar" method="post">
+                            <input type="hidden" name="productoId" value="@linea.ProductoId" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm" aria-label="Quitar @linea.Nombre">Quitar</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+
+            <div class="ct-total">
+                <span>Total</span>
+                <strong>$@Model.Total.ToString("0.00")</strong>
+            </div>
+            <a asp-controller="Menu" asp-action="Index" class="btn btn-secondary btn-sm mt-3">Seguir pidiendo</a>
+        </div>
+
+        <div class="col-lg-5">
+            <form asp-action="Confirmar" method="post" class="ct-checkout" novalidate>
+                <h2>Datos del pedido</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <fieldset class="mb-3">
+                    <legend class="form-label">¿Cómo lo quieres recibir?</legend>
+                    <div class="ct-choice">
+                        <label class="ct-choice__opt">
+                            <input type="radio" asp-for="Datos.Modalidad" value="Recoger" />
+                            <span>Recoger en el local</span>
+                        </label>
+                        <label class="ct-choice__opt">
+                            <input type="radio" asp-for="Datos.Modalidad" value="Domicilio" />
+                            <span>Entrega a domicilio</span>
+                        </label>
+                    </div>
+                    <span asp-validation-for="Datos.Modalidad" class="text-danger"></span>
+                </fieldset>
+
+                <div class="mb-3">
+                    <label asp-for="Datos.NombreContacto" class="form-label"></label>
+                    <input asp-for="Datos.NombreContacto" class="form-control" />
+                    <span asp-validation-for="Datos.NombreContacto" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Datos.TelefonoContacto" class="form-label"></label>
+                    <input asp-for="Datos.TelefonoContacto" type="tel" class="form-control" />
+                    <span asp-validation-for="Datos.TelefonoContacto" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4" id="bloque-direccion">
+                    <label asp-for="Datos.DireccionEntrega" class="form-label"></label>
+                    <input asp-for="Datos.DireccionEntrega" class="form-control" />
+                    <span asp-validation-for="Datos.DireccionEntrega" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Confirmar pedido</button>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            var opciones = document.querySelectorAll('input[name="Datos.Modalidad"]');
+            var bloque = document.getElementById('bloque-direccion');
+            if (!bloque || !opciones.length) return;
+            function actualizar() {
+                var dom = document.querySelector('input[name="Datos.Modalidad"]:checked');
+                bloque.style.display = (dom && dom.value === 'Domicilio') ? '' : 'none';
+            }
+            opciones.forEach(function (o) { o.addEventListener('change', actualizar); });
+            actualizar();
+        })();
+    </script>
+}

@@ -1,0 +1,65 @@
+@model CacaoTrigo.Models.Producto
+
+@{
+    // En "Crear" no hay producto todavía: Model puede ser null.
+    var tieneImagen = Model != null && !string.IsNullOrWhiteSpace(Model.ImagenUrl);
+}
+
+<div class="mb-3">
+    <label for="imagen" class="form-label">Imagen</label>
+
+    <div class="ct-upload">
+        <div class="ct-upload__preview" id="imagen-vista-previa">
+            @if (tieneImagen)
+            {
+                <img src="@Model?.ImagenUrl" alt="Imagen actual del producto" />
+            }
+            else
+            {
+                <span>Sin imagen</span>
+            }
+        </div>
+
+        <div class="ct-upload__ctrl">
+            <input id="imagen"
+                   name="imagen"
+                   type="file"
+                   class="form-control"
+                   accept=".png,.jpg,.jpeg,.webp,.gif,.svg,image/png,image/jpeg,image/webp,image/gif,image/svg+xml" />
+            <div class="form-text">PNG, JPG, JPEG, WebP, GIF o SVG. Máximo 5 MB.</div>
+            @Html.ValidationMessage("imagen", new { @class = "text-danger" })
+
+            @if (tieneImagen)
+            {
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="checkbox" id="quitarImagen" name="quitarImagen" value="true" />
+                    <label class="form-check-label" for="quitarImagen">Quitar la imagen actual</label>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var entrada = document.getElementById('imagen');
+        var vista = document.getElementById('imagen-vista-previa');
+        if (!entrada || !vista) return;
+        var original = vista.innerHTML;
+        entrada.addEventListener('change', function () {
+            var archivo = entrada.files && entrada.files[0];
+            if (!archivo) { vista.innerHTML = original; return; }
+            if (archivo.size > 5 * 1024 * 1024) {
+                alert('La imagen no puede pesar más de 5 MB.');
+                entrada.value = '';
+                vista.innerHTML = original;
+                return;
+            }
+            var img = document.createElement('img');
+            img.alt = 'Vista previa';
+            img.src = URL.createObjectURL(archivo);
+            vista.innerHTML = '';
+            vista.appendChild(img);
+        });
+    })();
+</script>

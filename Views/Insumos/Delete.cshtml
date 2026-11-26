@@ -1,0 +1,35 @@
+@model CacaoTrigo.Models.Insumo
+
+@{
+    ViewData["Title"] = "Eliminar insumo";
+}
+
+<div class="container py-4">
+    <h1>Eliminar insumo</h1>
+
+    <div class="alert alert-warning">
+        ¿Seguro que deseas eliminar este insumo? Esta acción no se puede deshacer.
+    </div>
+
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Nombre</dt>
+        <dd class="col-sm-9">@Model.Nombre</dd>
+
+        <dt class="col-sm-3">Unidad de medida</dt>
+        <dd class="col-sm-9">@Model.UnidadMedida</dd>
+
+        <dt class="col-sm-3">Cantidad disponible</dt>
+        <dd class="col-sm-9">@Model.CantidadDisponible.ToString("0.00")</dd>
+    </dl>
+
+    <form asp-action="Delete"
+          asp-route-id="@Model.InsumoId"
+          method="post">
+        <input type="hidden" asp-for="InsumoId" />
+
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

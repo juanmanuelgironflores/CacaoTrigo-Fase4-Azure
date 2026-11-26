@@ -1,0 +1,95 @@
+@model CacaoTrigo.Models.ViewModels.ReservaClienteViewModel
+
+@{
+    ViewData["Title"] = "Reservar una mesa";
+    var franjas = (List<string>)ViewBag.Franjas;
+}
+
+<div class="ct-pagehead">
+    <h1>Reservar una mesa</h1>
+    <p>Elige dónde quieres sentarte, el día y la hora. La mesa exacta la confirmamos nosotros.</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        <form asp-action="Crear" method="post" class="ct-reserve" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <fieldset class="mb-4">
+                <legend class="form-label">¿Dónde quieres comer?</legend>
+                <div class="ct-zones">
+                    <label class="ct-zone">
+                        <input type="radio" asp-for="Zona" value="Terraza" />
+                        <span class="ct-zone__box">
+                            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="10" /><path d="M32 8v8M32 48v8M8 32h8M48 32h8M15 15l6 6M43 43l6 6M49 15l-6 6M21 43l-6 6" /></svg>
+                            <strong>Terraza</strong>
+                            <small>Al aire libre</small>
+                        </span>
+                    </label>
+                    <label class="ct-zone">
+                        <input type="radio" asp-for="Zona" value="Interior" />
+                        <span class="ct-zone__box">
+                            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 30 32 10l24 20" /><path d="M14 26v28h36V26" /><path d="M27 54V38h10v16" /></svg>
+                            <strong>Interior</strong>
+                            <small>Dentro del local</small>
+                        </span>
+                    </label>
+                </div>
+                <span asp-validation-for="Zona" class="text-danger"></span>
+            </fieldset>
+
+            <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                    <label asp-for="Fecha" class="form-label"></label>
+                    <input asp-for="Fecha"
+                           type="date"
+                           asp-format="{0:yyyy-MM-dd}"
+                           min="@ViewBag.FechaMinima"
+                           max="@ViewBag.FechaMaxima"
+                           class="form-control" />
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+
+                <div class="col-sm-6">
+                    <label asp-for="Hora" class="form-label"></label>
+                    <select asp-for="Hora" class="form-select">
+                        <option value="">-- Elige la hora --</option>
+                        @foreach (var f in franjas)
+                        {
+                            <option value="@f" selected="@(Model.Hora == f)">@f</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Hora" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NumeroPersonas" class="form-label"></label>
+                <input asp-for="NumeroPersonas" type="number" min="1" max="20" class="form-control" />
+                <span asp-validation-for="NumeroPersonas" class="text-danger"></span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6">
+                    <label asp-for="NombreContacto" class="form-label"></label>
+                    <input asp-for="NombreContacto" class="form-control" />
+                    <span asp-validation-for="NombreContacto" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label asp-for="TelefonoContacto" class="form-label"></label>
+                    <input asp-for="TelefonoContacto" type="tel" class="form-control" />
+                    <span asp-validation-for="TelefonoContacto" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Reservar mesa</button>
+            <a asp-action="Index" class="btn btn-secondary">Mis reservas</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,34 @@
+@model CacaoTrigo.Models.Mesa
+
+@{
+    ViewData["Title"] = "Eliminar mesa";
+}
+
+<h1>Eliminar mesa</h1>
+
+<div class="alert alert-warning" role="alert">
+    ¿Seguro que deseas eliminar esta mesa? Esta acción no se puede deshacer.
+</div>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-5 col-md-4">Número de mesa</dt>
+    <dd class="col-7 col-md-8">@Html.DisplayFor(model => model.Numero)</dd>
+
+    <dt class="col-5 col-md-4">Capacidad</dt>
+    <dd class="col-7 col-md-8">@Html.DisplayFor(model => model.Capacidad) personas</dd>
+
+    <dt class="col-5 col-md-4">Ubicación</dt>
+    <dd class="col-7 col-md-8">@Html.DisplayFor(model => model.Ubicacion)</dd>
+
+    <dt class="col-5 col-md-4">Accesible</dt>
+    <dd class="col-7 col-md-8">@(Model.Accesible ? "Sí" : "No")</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="MesaId" />
+
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
