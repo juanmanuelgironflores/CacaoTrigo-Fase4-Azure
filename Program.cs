@@ -229,6 +229,20 @@ using (var scope = app.Services.CreateScope())
             ex,
             "No se pudieron crear los roles o el administrador inicial.");
     }
+
+    try
+    {
+        var productosAgregados = await SeedCatalogo.InicializarAsync(
+            contexto,
+            limite.Token);
+        logger.LogInformation(
+            "Cacao y Trigo: catálogo inicial listo. Productos agregados: {Cantidad}.",
+            productosAgregados);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "No se pudo cargar el catálogo inicial.");
+    }
 }
 
 app.Run();
