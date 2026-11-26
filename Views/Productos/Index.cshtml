@@ -84,7 +84,7 @@
                                     ? "Sin descripción"
                                     : producto.Descripcion)
                             </td>
-                            <td>@producto.Precio.ToString("C2")</td>
+                            <td>$@producto.Precio.ToString("0.00")</td>
                             <td>@(producto.Disponible ? "Sí" : "No")</td>
                             <td>@(producto.Categoria?.Nombre ?? "Sin categoría")</td>
                             <td class="text-end text-nowrap">
